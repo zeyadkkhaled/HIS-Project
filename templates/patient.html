@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Login</title>
+</head>
+<body>
+{% if userdata %}
+    <div class="container">
+    <header>
+        <h1 >{{ userdata['firstname'] }} {{ userdata['lastname'] }}</h1>
+        <span>Patient ID: P130412 | Male, 25 years</span>
+        <div class="header-right">
+            <button>View Profile</button>
+            <button>View EMR</button>
+            <button>View Billing</button>
+            <button>Select Patient</button>
+        </div>
+    </header>
+    <div class="profile">
+        <div class="left">
+            <img src="../static/images/profile.jpg" alt="Profile Photo">
+            <button class="change-photo">Change Photo</button>
+            <h2>Patient Profile</h2>
+            <p><strong>Patient Name:</strong> Neil S.</p>
+            <p><strong>Patient ID:</strong> P130412</p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Date of Birth:</strong> 05-Apr-1988</p>
+            <p><strong>Referred by:</strong> Practo.com</p>
+            <p><strong>Blood Group:</strong> O+</p>
+            <p><strong>Family:</strong> Parent: Girish V.<br>Spouse: Anita G.</p>
+        </div>
+        <div class="right">
+            <h2>Patient Notes</h2>
+            <textarea placeholder="Type note here"></textarea>
+            <div class="notes">
+                <p><strong>routine check up on Wednesday</strong></p>
+                <span>Dr. Rashmi G on 22 April 2013</span>
+                <p><strong>Needs wheelchair access.</strong></p>
+                <span>Dr. Anuraag D on 19 April 2013</span>
+            </div>
+            <h2>Medical History</h2>
+            <ul>
+                <li>Allergies</li>
+                <li>Undergone Dental Treatment Earlier</li>
+                <li>Low Blood Pressure</li>
+            </ul>
+            <h2>Groups</h2>
+            <ul>
+                <li>Corporate Patients</li>
+                <li>Has Insurance</li>
+                <li>Smoker</li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <p><strong><a href="{{  url_for('logout') }}"> Logout</a> </strong></p>
+    </footer>
+</div>
+{% else %}
+
+    <a href="/login">Login</a>
+{% endif %}
+</body>
+</html>

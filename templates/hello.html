@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello page</title>
+</head>
+<body>
+<form action="/hello" method="post" >
+    x: <input type="text" name="input1" style="margin: 10px 0px">
+    <br>
+    y: <input type="text" name="input2">
+    <br>
+    <button type="submit">Submit</button>
+    <br>
+    Result={{ r }}
+    {# the curley braces are not part of the html syntax (jinja syntax)if you run this separetly without
+    the server    we are using it will show different thing but here it is used to deal with the
+    input data in our case it is "result"
+    we put in the braces any python syntax and it must return a value#}
+
+
+</form>
+
+</body>
+</html>

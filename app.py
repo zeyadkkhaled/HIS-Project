@@ -1,3 +1,5 @@
+from tkinter.constants import CURRENT
+
 from flask import Flask, render_template, request, redirect, session, url_for
 import psycopg
 
@@ -12,49 +14,6 @@ database_connection_session = psycopg.connect(
     port=5432
 )
 
-
-@app.route('/test')
-def test():
-    return render_template('test.html')  # bynady 3la el html file el fl temp
-
-
-@app.route('/test2')
-def test2():
-    x = request.args.get('x')  # gets input from url
-    if x is None:
-        x = 0
-
-    y = request.args.get('y')
-    if y is None:
-        y = 0
-    name = request.args.get('name')
-    x = int(x)  # casted into integer as input from url are interpreted ass string not integer
-    y = int(y)
-    result = x + y
-    return f"result={result},name={name}"
-
-
-@app.route('/hello', methods=['GET', 'POST'])
-def hello():
-    input1 = 0
-    input2 = 0
-
-    if request.method == 'GET':
-        input1 = request.args.get('input1')
-        input2 = request.args.get('input2')
-    if request.method == 'POST':
-        input1 = request.form.get('input1')
-        input2 = request.form.get('input2')
-
-    # data validation
-
-    if input1 is None:
-        input1 = 0
-    if input2 is None:
-        input2 = 0
-
-    result = int(input1) * int(input2)
-    return render_template('hello.html', r=result)  # bynady 3la el html file el fl temp
 
 
 @app.route('/')  # This creates a function to connect '/' with home awl ma hayegy / hynady home (kol da fl url)
@@ -168,8 +127,10 @@ def add_user():
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_user(id):
     message = request.args.get('message')
+
     if request.method == 'GET':
-        return render_template('EditAdmins.html',aid=id ,msg=message)
+        return render_template('EditAdmins.html',id=id,msg=message)
+
     if request.method == 'POST':
         firstname = request.form.get('firstname')
         lastname = request.form.get('lastname')
@@ -179,34 +140,43 @@ def edit_user(id):
 
         cur = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
         cur.execute('SELECT * FROM users WHERE id = %s', (id,))
-        records = cur.fetchall()
-        oldemail = records['email']
-        if records is None:
-            message = 'Email does not exist or password is incorrect'
-            return redirect(f'/edit/{id}?message={message}')
+        records = cur.fetchone()
+        CURRENTemail = records['email']
+
+
 
         if password != confirm_password:
             message = 'Passwords do not match'
 
-        elif oldemail != email:
+        if CURRENTemail != email:
             # connect to database and store data
             cur2 = database_connection_session.cursor()
             cur2.execute('SELECT * FROM allusers WHERE email = %s', (email,))
             if cur2.fetchone():
                 message = 'Email already Exists'
-                return redirect(f'/edit/{id}?message={message}')
-        else:
+
+            else:
+                cur1 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
+
+                cur1.execute('UPDATE  allusers SET fname=%s , lname =%s , email=%s ,password=%s where email= %s ',
+                             (firstname, lastname, email, password, CURRENTemail))  # written this way for security
+                database_connection_session.commit()
+                cur.execute('UPDATE  users SET firstname=%s , lastname =%s , email=%s ,password=%s where email= %s ',
+                            (firstname, lastname, email, password, CURRENTemail))
+                database_connection_session.commit()
+                message = 'Admin Edited Successfully'
+        if email == CURRENTemail:
             cur1 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
 
-            cur1.execute('UPDATE  allusers SET fname=%s , lname =%s , email=%s ,password=%s where oldemail= %s ',
-                         (firstname, lastname, email, password, email))  # written this way to make it less hackable
+            cur1.execute('UPDATE  allusers SET fname=%s , lname =%s , email=%s ,password=%s where email= %s ',
+                         (firstname, lastname, email, password, CURRENTemail))  # written this way for security
             database_connection_session.commit()
-            cur.execute('UPDATE  users SET firstname=%s , lastname =%s , email=%s ,password=%s where oldemail= %s ',
-                        (firstname, lastname, email, password, email))
+            cur.execute('UPDATE  users SET firstname=%s , lastname =%s , email=%s ,password=%s where email= %s ',
+                        (firstname, lastname, email, password, CURRENTemail))
             database_connection_session.commit()
-            message = 'Admin Edit Successful'
-            return redirect(f'/edit/{id}?message={message}')
+            message = 'Admin Edited Successfully'
 
+    return redirect(f'/edit/{id}?message={message}')
 
 if __name__ == '__main__':  ##de heya wl shabaha foo2 ana msh fahemha
     app.run(debug=True)

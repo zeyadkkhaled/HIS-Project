@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Radiologist Dashboard</title>
+</head>
+<body>
+{% if userdata %}
+    <div class="container">
+        <header>
+            <h1>{{ userdata['firstname'] }} {{ userdata['lastname'] }}</h1>
+            <span>Radiologist ID: {{ userdata['radiologistid'] }}</span>
+            <div class="header-right">
+                <button>View Profile</button>
+                <button>Manage Reports</button>
+                <button>Update Availability</button>
+                <button>Settings</button>
+            </div>
+        </header>
+        <div class="profile">
+            <div class="left">
+                <img src="../static/images/WhatsApp Image 2024-12-20 at 11.54.30 PM.jpeg" alt="Profile Photo">
+                <button class="change-photo">Change Photo</button>
+                <h2>Radiologist Profile</h2>
+                <p><strong>Name:</strong> {{ userdata['firstname'] }} {{ userdata['lastname'] }}</p>
+                <p><strong>Email:</strong> {{ userdata['email'] }}</p>
+                <p><strong>Phone:</strong> {{ userdata['phonenumber'] if userdata['phonenumber'] else 'Not provided' }}</p>
+                <p><strong>Gender:</strong> {{ userdata['sex'] }}</p>
+                <p><strong>Salary:</strong> ${{ userdata['salary'] }}</p>
+                <p><strong>Hire Date:</strong> {{ userdata['hiredate'] }}</p>
+            </div>
+            <div class="right">
+                <h2>Assigned Reports</h2>
+                {% if reports %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Report ID</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for report in reports %}
+                            <tr>
+                                <td>{{ report['patient_name'] }}</td>
+                                <td>{{ report['report_id'] }}</td>
+                                <td>{{ report['report_date'] }}</td>
+                                <td>{{ report['status'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No reports assigned yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        <footer>
+            <p><strong><a href="{{ url_for('logout') }}">Logout</a></strong></p>
+        </footer>
+    </div>
+{% else %}
+    <p>You are not logged in. <a href="/login">Login</a></p>
+{% endif %}
+</body>
+</html>

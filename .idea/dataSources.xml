@@ -8,13 +8,6 @@
       <jdbc-url>jdbc:postgresql://ep-little-sea-a5pqiybv.us-east-2.aws.neon.tech:5432/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="57c0663f-6a31-4fee-9dac-fb7fd269074f">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="neondb@ep-square-dew-a59b9xyb.us-east-2.aws.neon.tech" uuid="85398cf3-cba2-44dc-8a75-4c5d76ba25ff">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>

@@ -45,6 +45,17 @@ def home():
             records = cur2.fetchone()
             return render_template('patient.html', userdata=records)
 
+        elif user['role'] == 'radiologist':
+            email = user['email']
+            cur2 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
+            cur2.execute('SELECT * FROM radiologists WHERE email = %s', (email,))
+            records = cur2.fetchone()
+
+
+
+            return render_template('radiologist.html', userdata=records)
+
+
 
 
     else:

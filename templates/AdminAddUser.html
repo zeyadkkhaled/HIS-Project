@@ -12,13 +12,16 @@
     <div class="container">
         <h1>Add User</h1>
         <form action="/add-user" method="POST">
+            {% if msg %}
+                <div class="alert alert-warning">{{ msg }}</div>
+            {% endif %}
             <div class="form-group">
                 <label for="first-name">First Name</label>
-                <input type="text" id="first-name" name="first_name" placeholder="Enter first name" required>
+                <input type="text" id="firstname" name="firstname" placeholder="Enter first name" required>
             </div>
             <div class="form-group">
                 <label for="last-name">Last Name</label>
-                <input type="text" id="last-name" name="last_name" placeholder="Enter last name" required>
+                <input type="text" id="lastname" name="lastname" placeholder="Enter last name" required>
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
@@ -31,7 +34,7 @@
 
             <div class="form-group-inline">
                 <div>
-                    <label for="sex">Sex</label>
+                    <label for="sex" id="sex">Sex</label>
                     <select id="sex" name="sex" required>
                         <option value="">Select sex</option>
                         <option value="male">Male</option>

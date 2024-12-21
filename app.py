@@ -38,14 +38,14 @@ def home():
             return render_template('index.html', user=user, usersdata=records1, patientsdata=records2,
                                    radiologistsdata=records3)
 
-        elif user['role'] == 'patient':
+        elif user['role'] == 'patient' or user['role'] == 'Patient':
             email = user['email']
             cur2 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
             cur2.execute('SELECT * FROM patients WHERE email = %s ', (email,))
             records = cur2.fetchone()
-            return render_template('patient.html', userdata=records)
+            return render_template('p_profile.html', userdata=records)
 
-        elif user['role'] == 'radiologist':
+        elif user['role'] == 'radiologist' or user['role'] == 'Radiologist':
             email = user['email']
             cur2 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
             cur2.execute('SELECT * FROM radiologists WHERE email = %s', (email,))

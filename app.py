@@ -50,17 +50,23 @@ def home():
             cur2 = database_connection_session.cursor(row_factory=psycopg.rows.dict_row)
             cur2.execute('SELECT * FROM radiologists WHERE email = %s', (email,))
             records = cur2.fetchone()
-
-
-
             return render_template('radiologist.html', userdata=records)
 
 
 
 
     else:
-        return redirect('/login')
+        return redirect('/main')
+@app.route('/main')
+def main():
+ return render_template('main.html')
 
+@app.route('/aboutus')
+def aboutus():
+ return render_template('aboutus.html')
+@app.route('/lmore')
+def lmore():
+ return render_template('lmore.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -126,7 +132,7 @@ def login():
 @app.route('/logout')  # This creates a function to connect '/' with home awl ma hayegy / hynady home (kol da fl url)
 def logout():
     session.pop('user', None)
-    return redirect('/login')
+    return redirect('/main')
 
 
 @app.route('/delete/<int:id>/<int:role>')
